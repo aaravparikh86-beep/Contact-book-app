@@ -1,3 +1,4 @@
+my_dict = {"Police" : 100 , "Ambulance" : 108, "Fire" : 101}
 add_contacts = "add contacts"
 search_contacts = "search contacts"
 delete_contacts = "delete contacts"
@@ -23,15 +24,26 @@ while a > 0:
         b = 1
         while b < add:
             contacts = input(f"Contact {b}: ")
-            contact_no = input(f"Contact number {b}: ")
-            contact_no_1 = contact_no.strip()
-            contact_no_2 = len(contact_no_1)
+            contact_no = int(input(f"Contact number {b}: "))
+            contact_no_1 = contact_no
+            contact_no_2 = len(str(contact_no_1))
             if contact_no_2 == 10:
-                pass
+                if str(contact_no_1).isnumeric():
+                    if contacts not in my_dict.keys():
+                        if contact_no_1 not in my_dict.values():
+                            my_dict[contacts] = contact_no_1
+                            pass
+                        else:
+                            contact_no_3 = input("Do you want to update the contact")
+                    else:
+                        print("You already have saved a contact by this name")
+                        break
+                else:
+                    print("Enter a 10-digit number")
+                    break
             else:
                 print("Enter a proper contact number")
-            if contact_no_1.isdigit():
-                pass
-            else:
-                print("Enter a 10-digit number")
+                break
+            print(my_dict)
+
             b+=1
