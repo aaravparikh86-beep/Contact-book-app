@@ -87,54 +87,63 @@ while a > 0:
     def update_contact():
         update = input("Whose contact do you want to update: ")
         update_1 = update.lower().strip()
+
+        key = None
+        update_5 = None
+
         if update_1.isalpha():
-            update_5 = str(update_1)
-            key = my_dict[update_5]
+            update_5 = update_1
+            if update_5 in my_dict:
+                key = update_5
+
         elif update_1.isnumeric():
             update_5 = int(update_1)
-            for key, value in my_dict.items():
-                if value == update_5:
-                    pass
+            for k, values in my_dict.items():
+                if update_5 in values:
+                    key = k
                     break
 
-        if update_5 in my_dict or update_5 in my_dict.values():
-            update_2 = input("Do you want to update the contact or the contact number: ")
-            update_2_1 = update_2.lower().strip()
-            if "contact" in update_2_1:
-                update_3 = input("Enter the contact name: ")
-                if update_3 not in my_dict.keys():
-                    my_dict[update_3] = my_dict.pop(key,None)
+        if key is None:
+            print("Enter an appropriate contact name or number")
+            print("Update failed\n")
+            return
+
+        update_2 = input("Do you want to update the contact or the contact number: ")
+        update_2_1 = update_2.lower().strip()
+
+        if "contact" in update_2_1:
+            update_3 = input("Enter the contact name: ").strip().lower()
+
+            if not update_3.isalpha():
+                print("Invalid contact name")
+                print("Update failed")
+                return
+
+            if update_3 not in my_dict:
+                my_dict[update_3] = my_dict.pop(key)
+                print("Contact updated successfully")
+            else:
+                print("You already have saved a contact by this name")
+                print("Update failed")
+
+        elif "number" in update_2_1:
+            update_4 = input("Enter the contact number: ").strip()
+
+            if update_4.isnumeric() and len(update_4) == 10:
+                update_4 = int(update_4)
+
+                if update_4 not in my_dict.values():
+                    my_dict[key] = update_4
                     print("Contact updated successfully")
                 else:
-                    print("You already have saved a contact by this name")
+                    print("You already have saved a contact by this number")
                     print("Update failed")
-            elif "number" in update_2_1:
-                update_4 = int(input("Enter the contact number: "))
-                if len(str(update_4)) == 10:
-                    if str(update_4).isnumeric():
-                        if update_4 not in my_dict.values():
-                            my_dict[key] = update_4
-                            print("Contact updated successfully")
-                        else:
-                            print("You already have saved a contact by this number")
-                            print("Update failed")
-                            pass
-                    else:
-                        print("Enter an appropriate contact number")
-                        print("Update failed")
-                        pass
-                else:
-                    print("Enter a 10 digit number")
-                    print("Update failed")
-                    pass
             else:
+                print("Enter a valid 10 digit number")
                 print("Update failed")
-                pass
+
         else:
-            print("Enter an appropriate contact name or number")
             print("Update failed")
-            print()
-            print()
 
 
     def delete_contact():
@@ -188,7 +197,9 @@ while a > 0:
             new_dict_1.pop(key2, None)
 
 
-        sorted_dict = dict(sorted(new_dict_1.items()))
+        sorted_dict = dict(
+        sorted(new_dict_1.items(), key=lambda x: (type(x[0]).__name__, x[0]))
+        )
 
         repeated_letter = set()
 
@@ -204,7 +215,7 @@ while a > 0:
             print()
             print(bb)
 
-            for value in cc:
+            for value in cc or []:
                 print(f"- {value}")
 
         print()
@@ -212,23 +223,32 @@ while a > 0:
 
         search = input("Do you want to search for contacts: ").strip().lower()
 
-        if "yes" in search:
-            search_2 = input("Enter the contact name: ").strip()
+        if search in ("yes", "y"):
+            search_2 = input("Enter the contact name or number: ").strip().lower()
 
+            found = False
 
-            if search_2 in my_dict.items():
-                print(f"Contact: {search_2}")
-                print("Numbers:", ", ".join(my_dict[search_2]))
-            else:
-                print("There is no contact saved as",search_2)
-        else:
-            pass
+            for name, numbers in my_dict.items():
+                if search_2 in name.lower():
+                    print(f"\nContact: {name}")
+                    print("Numbers:", ", ".join(map(str, numbers)))
+                    found = True
+
+                else:
+                    for num in numbers:
+                        if search_2 in str(num):
+                            print(f"\nContact: {name}")
+                            print("Numbers:", ", ".join(map(str, numbers)))
+                            found = True
+                            break
+
+            if not found:
+                print("No matching contact found.")
 
 
         print()
         print()
 
-        
 
     def Exit_app():
         print()
