@@ -80,7 +80,8 @@ while a > 0:
                 break
             b+=1
             print("Contact added successfully")
-            print(my_dict)
+            print()
+            print()
 
 
     def update_contact():
@@ -132,6 +133,8 @@ while a > 0:
         else:
             print("Enter an appropriate contact name or number")
             print("Update failed")
+            print()
+            print()
 
 
     def delete_contact():
@@ -157,6 +160,9 @@ while a > 0:
 
         print("There is no such contact in the contact book")
 
+        print()
+        print()
+
     
     def view_contact():
         print()
@@ -177,12 +183,12 @@ while a > 0:
 
 
         sorted_dict = dict(sorted(new_dict_1.items()))
-        print(sorted_dict)
 
         repeated_letter = set()
 
         for bb, cc in sorted_dict.items():
             print()
+            pass
 
             first_letter = bb[0]
             if first_letter not in repeated_letter:
@@ -195,7 +201,41 @@ while a > 0:
             for value in cc:
                 print(f"- {value}")
 
-            print()
+        print()
+        print()
+
+        search = input("Do you want to search for contacts: ").strip().lower()
+
+        if "yes" in search:
+            search_2 = input("Enter the contact name or number: ").strip()
+
+
+            if search_2 in my_dict:
+                print(f"Contact: {search_2}")
+                print("Numbers:", *my_dict[search_2])
+
+            else:
+                search_3 = False
+                for name, numbers in my_dict.items():
+                    if search_2 in numbers:
+                        print(f"Number {search_2} belongs to {name}")
+                        search_3 = True
+
+                if not search_3:
+                    print("There is no contact saved as", search_2)
+
+        elif "no" in search:
+            print("Search cancelled.")
+
+        print()
+        print()
+
+        
+
+    def Exit_app():
+        print()
+        print()
+        print("Thank you for using Contact book app ")
 
     if Input_1 in add_contacts:
         add_contact()
@@ -205,3 +245,6 @@ while a > 0:
         delete_contact()
     if Input_1 in view_contacts:
         view_contact()
+    if Input_1 in exit_app:
+        Exit_app()
+        break
