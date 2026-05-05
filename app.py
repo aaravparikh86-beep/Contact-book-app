@@ -82,6 +82,7 @@ while a > 0:
             print("Contact added successfully")
             print(my_dict)
 
+
     def update_contact():
         update = input("Whose contact do you want to update: ")
         update_1 = update.lower().strip()
@@ -142,13 +143,13 @@ while a > 0:
             return
 
         if delete.isdigit():
-            delete_val = int(delete)
+            delete_1 = int(delete)
 
             for name, numbers in my_dict.items():
-                if delete_val in numbers:
-                    numbers.remove(delete_val)
+                if delete_1 in numbers:
+                    numbers.remove(delete_1)
 
-                    if not numbers:  # if list becomes empty
+                    if not numbers:
                         del my_dict[name]
 
                     print("Number deleted successfully")
@@ -156,9 +157,51 @@ while a > 0:
 
         print("There is no such contact in the contact book")
 
+    
+    def view_contact():
+        print()
+        e = 0
+        keys = list(my_dict.keys())
+        values = list(my_dict.values())
+
+        while e < 3:
+            print(keys[e])
+            print(*values[e])
+            print()
+            e += 1
+
+        new_dict_1 = my_dict.copy()
+        new_dict_2 = {"Police" : [100] , "Ambulance" : [108], "Fire" : [101]}
+        for key2 in new_dict_2:
+            new_dict_1.pop(key2, None)
+
+
+        sorted_dict = dict(sorted(new_dict_1.items()))
+        print(sorted_dict)
+
+        repeated_letter = set()
+
+        for bb, cc in sorted_dict.items():
+            print()
+
+            first_letter = bb[0]
+            if first_letter not in repeated_letter:
+                print(first_letter)
+                repeated_letter.add(first_letter)
+
+            print()
+            print(bb)
+
+            for value in cc:
+                print(f"- {value}")
+
+            print()
+
     if Input_1 in add_contacts:
         add_contact()
     if Input_1 in update_contacts:
         update_contact()
     if Input_1 in delete_contacts:
         delete_contact()
+    if Input_1 in view_contacts:
+        view_contact()
