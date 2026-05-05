@@ -139,29 +139,35 @@ while a > 0:
 
     def delete_contact():
         delete = input("Enter name or number to delete: ").strip()
+        confirmation = input("Warning: Do you want to delete the conact: ")
+        if confirmation == "yes":         
+            if delete in my_dict:
+                del my_dict[delete]
+                print("Contact deleted successfully")
+                return
 
-        if delete in my_dict:
-            del my_dict[delete]
-            print("Contact deleted successfully")
-            return
+            if delete.isdigit():
+                delete_1 = int(delete)
 
-        if delete.isdigit():
-            delete_1 = int(delete)
+                for name, numbers in my_dict.items():
+                    if delete_1 in numbers:
+                        numbers.remove(delete_1)
 
-            for name, numbers in my_dict.items():
-                if delete_1 in numbers:
-                    numbers.remove(delete_1)
+                        if not numbers:
+                            del my_dict[name]
 
-                    if not numbers:
-                        del my_dict[name]
+                    
+                        print("Number deleted successfully")
+                        return
 
-                    print("Number deleted successfully")
-                    return
+            print("There is no such contact in the contact book")
 
-        print("There is no such contact in the contact book")
-
-        print()
-        print()
+            print()
+            print()
+        elif confirmation == "no":
+            print("Your contacts are not deleted")
+        else:
+            pass
 
     
     def view_contact():
@@ -207,25 +213,17 @@ while a > 0:
         search = input("Do you want to search for contacts: ").strip().lower()
 
         if "yes" in search:
-            search_2 = input("Enter the contact name or number: ").strip()
+            search_2 = input("Enter the contact name: ").strip()
 
 
-            if search_2 in my_dict:
+            if search_2 in my_dict.items():
                 print(f"Contact: {search_2}")
-                print("Numbers:", *my_dict[search_2])
-
+                print("Numbers:", ", ".join(my_dict[search_2]))
             else:
-                search_3 = False
-                for name, numbers in my_dict.items():
-                    if search_2 in numbers:
-                        print(f"Number {search_2} belongs to {name}")
-                        search_3 = True
+                print("There is no contact saved as",search_2)
+        else:
+            pass
 
-                if not search_3:
-                    print("There is no contact saved as", search_2)
-
-        elif "no" in search:
-            print("Search cancelled.")
 
         print()
         print()
