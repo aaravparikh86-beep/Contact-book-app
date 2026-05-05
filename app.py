@@ -1,4 +1,4 @@
-my_dict = {"Police" : 100 , "Ambulance" : 108, "Fire" : 101}
+my_dict = {"Police" : [100] , "Ambulance" : [108], "Fire" : [101]}
 add_contacts = "add contacts"
 search_contacts = "search contacts"
 delete_contacts = "delete contacts"
@@ -33,27 +33,38 @@ while a > 0:
                 if str(contact_no_1).isnumeric():
                     if contacts not in my_dict.keys():
                         if contact_no_1 not in my_dict.values():
-                            my_dict[contacts] = contact_no_1
+                            my_dict[contacts] = [contact_no_1]
                             pass
                         else:
-                            contact_no_3 = input("Do you want to update the contact")
+                            contact_no_3 = input("Do you want to update the contact: ")
                             contact_no_3_1 = contact_no_3.lower().strip()
-                            if contact_no_3 == "yes":
+                            if contact_no_3_1 == "yes":
                                 update_contact()
                             else:
-                                print("Failed to add the contact")
-                                break
+                                print("Failed to add contact")
                     else:
                         print("You already have saved a contact by this name")
-                        contacts_1 = input("Do you want to change the name")
+                        contacts_1 = input("Do you want to change the name: ")
                         contacts_1_1 = contacts_1.lower().strip()
-                        if contacts_1 == "yes":
-                            contacts_2 = input("Enter the correct name")
+                        if contacts_1_1 == "yes":
+                            contacts_2 = input("Enter the correct name: ")
                             if contacts_2 not in my_dict.keys():
-                                my_dict[contacts_2] = contact_no_1
+                                my_dict[contacts_2] = [contact_no_1]
                                 pass
                             else:
                                 print("You already have saved a contact by this name")
+                                print("Failed to add the contact")
+                                break
+                        elif contacts_1_1 == "no":
+                            multiple_contacts = input("Do you want to add multiple phone number for this contact: ")
+                            multiple_contacts_1 = multiple_contacts.lower().strip()
+                            if multiple_contacts_1 == "yes":
+                                for keys, value in my_dict.items():
+                                    if value == contact_no_1:
+                                        break
+                                my_dict[contacts].append(contact_no_1)
+                                print("Contact added successfully")
+                            else:
                                 print("Failed to add the contact")
                                 break
                         else:
@@ -69,41 +80,85 @@ while a > 0:
                 break
             b+=1
             print("Contact added successfully")
+            print(my_dict)
+
     def update_contact():
-        if Input_1 in update_contacts:
-            update = input("Whose contact do you want to update: ")
-            update_1 = update.lower().strip()
-            if update_1 in my_dict.keys():
-                update_2 = input("Do you want to update the contact or the contact number: ")
-                update_2_1 = update_2.lower().strip()
-                if "contact" in update_2_1:
-                    update_3 = input("Enter the contact name: ")
-                    if update_3 not in my_dict.keys():
-                        my_dict[update_3] = my_dict.pop(update_1)
-                        print("Contact updated successfully")
-                    else:
-                        print("You already have saved a contact by this name")
-                        print("Update failed")
-                else:
+        update = input("Whose contact do you want to update: ")
+        update_1 = update.lower().strip()
+        if update_1.isalpha():
+            update_5 = str(update_1)
+            key = my_dict[update_5]
+        elif update_1.isnumeric():
+            update_5 = int(update_1)
+            for key, value in my_dict.items():
+                if value == update_5:
                     pass
-                if "number" in update_2_1:
-                    update_4 = input("Enter the contact number")
-                    if update_4 not in my_dict.values():
-                        my_dict[update_1] = update_4
-                        print("Contact updated successfully")
-                    else:
-                        print("You already have saved a contact by this number")
-                        print("Update failed")
+                    break
+
+        if update_5 in my_dict or update_5 in my_dict.values():
+            update_2 = input("Do you want to update the contact or the contact number: ")
+            update_2_1 = update_2.lower().strip()
+            if "contact" in update_2_1:
+                update_3 = input("Enter the contact name: ")
+                if update_3 not in my_dict.keys():
+                    my_dict[update_3] = my_dict.pop(key,None)
+                    print("Contact updated successfully")
                 else:
+                    print("You already have saved a contact by this name")
+                    print("Update failed")
+            elif "number" in update_2_1:
+                update_4 = int(input("Enter the contact number: "))
+                if len(str(update_4)) == 10:
+                    if str(update_4).isnumeric():
+                        if update_4 not in my_dict.values():
+                            my_dict[key] = update_4
+                            print("Contact updated successfully")
+                        else:
+                            print("You already have saved a contact by this number")
+                            print("Update failed")
+                            pass
+                    else:
+                        print("Enter an appropriate contact number")
+                        print("Update failed")
+                        pass
+                else:
+                    print("Enter a 10 digit number")
+                    print("Update failed")
                     pass
             else:
-                print("Enter an appropriate contact name")
                 print("Update failed")
+                pass
         else:
-            print("Enter an appropriate contact number")
-            print("update failed")
+            print("Enter an appropriate contact name or number")
+            print("Update failed")
+
+
+    def delete_contact():
+        delete = input("Enter name or number to delete: ").strip()
+
+        if delete in my_dict:
+            del my_dict[delete]
+            print("Contact deleted successfully")
+            return
+
+        if delete.isdigit():
+            delete_val = int(delete)
+
+            for name, numbers in my_dict.items():
+                if delete_val in numbers:
+                    numbers.remove(delete_val)
+
+                    if not numbers:  # if list becomes empty
+                        del my_dict[name]
+
+                    print("Number deleted successfully")
+                    return
+
+        print("There is no such contact in the contact book")
 
     if Input_1 in add_contacts:
         add_contact()
     if Input_1 in update_contacts:
         update_contact()
+    if Input_1 in delete_contacts:
+        delete_contact()
