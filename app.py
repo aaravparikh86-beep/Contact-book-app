@@ -9,11 +9,10 @@ update_contacts = "update conacts"
 
 print("Welcome to contact book app")
 a = 1
-while a > 0:
+while a > 0:    
     print("what do you want to do:-")
     print("add contacts")
     print("update contacts")
-    print("search contacts")
     print("delete contacts")
     print("view contacts")
     print("exit app")
@@ -35,16 +34,18 @@ while a > 0:
             if contact_no_2 == 10:
                 if str(contact_no_1).isnumeric():
                     if contacts not in my_dict.keys():
-                        if contact_no_1 not in my_dict.values():
+                        duplicate_1 = False
+
+                        for numbers in my_dict.values():
+                            if contact_no_1 in numbers:
+                                duplicate_1 = True
+                                break
+
+                        if not duplicate_1:
                             my_dict[contacts] = [contact_no_1]
-                            pass
                         else:
-                            contact_no_3 = input("Do you want to update the contact: ")
-                            contact_no_3_1 = contact_no_3.lower().strip()
-                            if contact_no_3_1 == "yes":
-                                update_contact()
-                            else:
-                                print("Failed to add contact")
+                            print("You already have saved a contact by this number")
+                            print("Failed to add contact")
                     else:
                         print("You already have saved a contact by this name")
                         contacts_1 = input("Do you want to change the name: ")
@@ -124,8 +125,15 @@ while a > 0:
             update_4 = input("Enter the contact number: ").strip()
             if update_4.isnumeric() and len(update_4) == 10:
                 update_4 = int(update_4)
-                if update_4 not in my_dict.values():
-                    my_dict[key] = update_4
+                duplicate = False
+
+                for numbers in my_dict.values():
+                    if update_4 in numbers:
+                        duplicate = True
+                        break
+
+                if not duplicate:
+                    my_dict[key] = [update_4]
                     print("Contact updated successfully")
                 else:
                     print("You already have saved a contact by this number")
